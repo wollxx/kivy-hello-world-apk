@@ -1,0 +1,50 @@
+# Buildozer
+.buildozer/
+dist/
+bin/
+*.apk
+*.apks
+*.aab
+*.so
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Kivy
+.kivy/
+
+# Android
+*.keystore
+*.jks
