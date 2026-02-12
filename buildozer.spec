@@ -27,9 +27,9 @@ python.version = 3.9
 # Android specific configurations
 android.api = 33
 android.minapi = 21
-android.ndk = 25b
+android.ndk = 27c
 android.ndk_api = 21
-android.sdk = 26
+android.sdk = 33
 
 # Permissions needed (none for basic Hello World)
 android.permissions =
