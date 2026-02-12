@@ -1,5 +1,8 @@
 [app]
 
+# Application version
+version = 1.0.0
+
 # Title of your application
 title = HelloWorld
 
