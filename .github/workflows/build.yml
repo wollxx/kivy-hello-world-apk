@@ -14,9 +14,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'
         cache: 'pip'
 
     - name: Install system dependencies
@@ -27,24 +27,22 @@ jobs:
           zip \
           unzip \
           openjdk-17-jdk \
-          python3-pip \
           autoconf \
           libtool \
           pkg-config \
           zlib1g-dev \
           cmake \
           libffi-dev \
-          Aidl \
           libssl-dev \
           build-essential \
           ccache \
-          libgl1-mesa-dev \
-          libgles2-mesa-dev \
-          libegl1-mesa-dev \
-          libsdl2-dev \
-          libsdl2-image-dev \
-          libsdl2-mixer-dev \
-          libsdl2-ttf-dev
+          libltdl-dev
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
     - name: Install Python dependencies
       run: |
@@ -52,37 +50,15 @@ jobs:
         pip install cython buildozer
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Initialize Buildozer spec (if not exists)
-      run: |
-        if [ ! -f buildozer.spec ]; then
-          buildozer init
-        fi
-
     - name: Build APK with Buildozer
-      env:
-        ANDROID_HOME: ${{ runner.temp }}/android-sdk
       run: |
-        # Accept Android SDK licenses
-        mkdir -p $ANDROID_HOME/licenses
-        echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $ANDROID_HOME/licenses/android-sdk-license
-        echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
-        echo "e6b7c2ab7fa2298c15165e9583d0acf0b04a2232" >> $ANDROID_HOME/licenses/android-sdk-license
-        echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-license
-        
-        # Set up Android SDK environment
-        echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
-        echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
-
-        # Build the APK (this will take quite a while)
         buildozer -v android debug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: |
-          bin/*.apk
-          .buildozer/android/app/build/outputs/apk/**/*.apk
+        path: bin/*.apk
         retention-days: 14
 
     - name: Upload logs on failure
