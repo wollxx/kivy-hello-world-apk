@@ -52,7 +52,7 @@ jobs:
         pip install cython buildozer
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Build APK with Buildozer
+    - name: Configure Android SDK for Buildozer
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -63,7 +63,15 @@ jobs:
         # Install required SDK components
         sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
         
-        # Build the APK
+        # Create buildozer directory structure and link SDK
+        mkdir -p ~/.buildozer/android/platform
+        ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+
+    - name: Build APK with Buildozer
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+      run: |
         buildozer -v android debug
 
     - name: Upload APK artifact

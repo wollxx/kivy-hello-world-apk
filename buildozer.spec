@@ -22,14 +22,13 @@ source.include_exts = py,png,jpg,kv,atlas
 requirements = python3,kivy
 
 # Python version to use
-python.version = 3.9
+python.version = 3
 
 # Android specific configurations
 android.api = 33
 android.minapi = 21
-android.ndk = 27c
+android.ndk = 25b
 android.ndk_api = 21
-android.sdk = 33
 
 # Permissions needed (none for basic Hello World)
 android.permissions =
