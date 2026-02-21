@@ -53,7 +53,17 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Build APK with Buildozer
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       run: |
+        # Accept all SDK licenses
+        yes | sdkmanager --licenses
+        
+        # Install required SDK components
+        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
+        
+        # Build the APK
         buildozer -v android debug
 
     - name: Upload APK artifact
