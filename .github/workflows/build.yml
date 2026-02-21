@@ -25,9 +25,6 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-
     - name: Install system dependencies
       run: |
         sudo apt-get update
@@ -52,25 +49,7 @@ jobs:
         pip install cython buildozer
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Configure Android SDK for Buildozer
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-      run: |
-        # Accept all SDK licenses
-        yes | sdkmanager --licenses
-        
-        # Install required SDK components
-        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
-        
-        # Create buildozer directory structure and link SDK
-        mkdir -p ~/.buildozer/android/platform
-        ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
-
     - name: Build APK with Buildozer
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       run: |
         buildozer -v android debug
 
